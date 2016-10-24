@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title></title>
+    <style>
+        textarea {
+            width: 600px;
+            height: 200px;
+        }
+        .submit {
+            text-align:center;
+        }
+        .add {
+            background-color: lightgreen;
+        }
+        .delete {
+            background-color: red;
+        }
+        .edit {
+            background-color: yellow;
+        }
+
+    </style>
+</head>
+<body>
+<form id="form" action="compare.php" method="post">
+    <div class="text-input">
+        <label for="originText">Введите текст образец</label>
+        <textarea id="originText"  name="originText" ></textarea>
+    </div>
+
+    <div class="text-input">
+        <label for="originText">Введите текст правку</label>
+        <textarea id="diffText"  name="diffText"></textarea>
+    </div>
+
+    <div class="submit">
+        <input type="submit" value="Сравнить" />
+    </div>
+
+</form>
+
+<label for="result">Результат</label>
+<div id="result">Здесь будет результат...</div>
+
+<script>
+    $(document).ready(function () {
+        $('#form').submit(function ($e) {
+            $e.preventDefault();
+            $.ajax({
+                url: "compare.php",
+                method: 'POST',
+                data: $('#form').serialize()
+            }).done(function(xhr) {
+                $('#result').html(xhr);
+            });
+        });
+
+
+        $('#result').on('mouseover', '.edit', function ($e) {
+            var $target = $($e.target);
+            $target.data('diff', $target.html());
+            $target.html($target.data('origin'));
+        });
+        $('#result').on('mouseout', '.edit', function ($e) {
+            var $target = $($e.target);
+            $target.html($target.data('diff'));
+        });
+    });
+</script>
+</body>
+</html>
