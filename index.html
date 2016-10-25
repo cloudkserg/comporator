@@ -54,7 +54,7 @@
                 method: 'POST',
                 data: $('#form').serialize()
             }).done(function(xhr) {
-                $('#result').html(xhr);
+                $('#result').html('<pre>' + xhr + '</pre>');
             });
         });
 
